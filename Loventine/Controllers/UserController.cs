@@ -1,5 +1,4 @@
-﻿using Loventine.Models;
-using Loventine.Services;
+﻿using Loventine.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Loventine.Controllers
@@ -35,12 +34,12 @@ namespace Loventine.Controllers
         public async Task<IActionResult> Post([FromBody] User user)
         {
             await _mongoDBService.CreateUserAsync(user);
-            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(Get), new { id = user._id }, user);
         }
         [HttpPost("loginWithEmail")]
         public async Task<IActionResult> LoginWithEmail([FromBody] LoginRequest loginRequest)
         {
-            var loginSuccess = await _mongoDBService.LoginUserAsync(loginRequest.Email, loginRequest.Password);
+            var loginSuccess = await _mongoDBService.LoginUserAsync(loginRequest.email, loginRequest.password);
 
             if (loginSuccess != null)
             {

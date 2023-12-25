@@ -1,67 +1,63 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace YourNamespace
+public class Post
 {
-    public class Post
-    {
-        public Post()
-        {
-            Comments = new List<string>();
-            LikeAllUserId = new List<string>();
-        }
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string _id { get; set; }
 
-        [BsonRequired]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Author { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string author { get; set; }
 
-        [BsonRequired]
-        public string? Title { get; set; }
+    public string title { get; set; }
+    public string content { get; set; }
+    public string postingTime { get; set; }
+    public List<string> likeAllUserId { get; set; } = new List<string>();
+    public int likeCounts { get; set; } = 0;
+    public List<string> comments { get; set; } = new List<string>();
+    public List<string> images { get; set; } = new List<string>();
+    public string postType { get; set; }
+    public decimal price { get; set; }
+    public string adviseType { get; set; }
 
-        [BsonRequired]
-        public string? Content { get; set; }
+    public int hourlyDuration { get; set; }
+    public int dailyDuration { get; set; }
+    public int monthlyDuration { get; set; }
+    public int yearlyDuration { get; set; }
+    public string emoji { get; set; }
+    public int view { get; set; } = 0;
+    public int applyCount { get; set; } = 0;
+    public bool isLike { get; set; } = false;
+    public bool isDelete { get; set; } = false;
+    public string deleteTime { get; set; }
+    public string userAddress { get; set; }
+    public bool isPublic { get; set; } = true;
+    public bool isBookmark { get; set; } = false;
+    public int countPaymentVerified { get; set; } = 0;
+    public int numConsultingJobStart { get; set; } = 0;
+    public int countPayment { get; set; } = 0;
 
-        [BsonRequired]
-        public string? PostingTime { get; set; }
+    [BsonIgnore]
+    public bool IsHourlyType => adviseType == ADVICE_TYPE.HOURLY;
+    [BsonIgnore]
+    public bool IsDailyType => adviseType == ADVICE_TYPE.DAILY;
+    [BsonIgnore]
+    public bool IsMonthlyType => adviseType == ADVICE_TYPE.MONTHLY;
+    [BsonIgnore]
+    public bool IsYearlyType => adviseType == ADVICE_TYPE.YEARLY;
+}
 
-        public List<string>? LikeAllUserId { get; set; }
+public static class ADVICE_TYPE
+{
+    public const string HOURLY = "Hourly";
+    public const string DAILY = "Daily";
+    public const string MONTHLY = "Monthly";
+    public const string YEARLY = "Yearly";
+}
 
-        [BsonDefaultValue(0)]
-        public int LikeCounts { get; set; }
-
-        public List<string>? Comments { get; set; }
-
-        [BsonDefaultValue(null)]
-        public List<string>? Images { get; set; }
-
-        public string? Emoji { get; set; }
-
-        [BsonDefaultValue(0)]
-        public int View { get; set; }
-
-        [BsonDefaultValue(false)]
-        public bool IsLike { get; set; }
-
-        [BsonDefaultValue(false)]
-        public bool IsDelete { get; set; }
-
-        public string? DeleteTime { get; set; }
-
-        public string? UserAddress { get; set; }
-
-        [BsonDefaultValue(true)]
-        public bool IsPublic { get; set; }
-
-        [BsonDefaultValue(false)]
-        public bool IsBookmark { get; set; }
-
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime CreatedAt { get; set; }
-
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime UpdatedAt { get; set; }
-    }
+public static class POST_TYPE
+{
+    public const string TYPE1 = "Type1";
+    public const string TYPE2 = "Type2";
 }

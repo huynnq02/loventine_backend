@@ -1,6 +1,5 @@
 ﻿using Loventine.Services;
 using Microsoft.AspNetCore.Mvc;
-using YourNamespace;
 
 namespace Loventine.Controllers
 {
@@ -39,7 +38,7 @@ namespace Loventine.Controllers
         public async Task<ActionResult<Post>> CreatePost([FromBody] Post post)
         {
             await _mongoDBService.CreatePostAsync(post);
-            return CreatedAtAction(nameof(GetPostById), new { postId = post.Id }, post);
+            return CreatedAtAction(nameof(GetPostById), new { postId = post._id }, post);
         }
 
         [HttpPut("{postId}")]

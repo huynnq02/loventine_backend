@@ -1,26 +1,18 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Loventine
+public class Like
 {
-    public class Like
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string _id { get; set; }
 
-        [BsonRequired]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? PostId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string postId { get; set; }
 
-        [BsonRequired]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? UserLikeId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string userLikeId { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime CreatedAt { get; set; }
-
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime UpdatedAt { get; set; }
-    }
+    public string time { get; set; }
 }
+

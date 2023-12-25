@@ -38,7 +38,7 @@ namespace Loventine.Controllers
         public async Task<ActionResult<Comment>> CreateComment([FromBody] Comment comment)
         {
             await _mongoDBService.CreateCommentAsync(comment);
-            return CreatedAtAction(nameof(GetCommentById), new { commentId = comment.Id }, comment);
+            return CreatedAtAction(nameof(GetCommentById), new { commentId = comment._id }, comment);
         }
 
         [HttpPut("{commentId}")]
