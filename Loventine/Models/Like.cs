@@ -5,14 +5,14 @@ public class Like
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string _id { get; set; }
+    public string? _id { get; set; }
 
     [BsonRepresentation(BsonType.ObjectId)]
-    public string postId { get; set; }
+    public string? postId { get; set; }
 
     [BsonRepresentation(BsonType.ObjectId)]
-    public string userLikeId { get; set; }
+    public string? userLikeId { get; set; }
 
-    public string time { get; set; }
+    public string? time { get; set; }
 }
 
