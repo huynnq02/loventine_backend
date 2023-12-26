@@ -12,17 +12,17 @@ public class User
     public string? phone { get; set; }
 
     [BsonRequired]
-    public string password { get; set; }
+    public string? password { get; set; }
 
     [BsonRequired]
     public string? passwordConfirm { get; set; }
     public string? token { get; set; }
 
-    public string email { get; set; }
+    public string? email { get; set; }
     public string? birthday { get; set; }
 
     public bool? verified { get; set; } = false;
-    public string name { get; set; }
+    public string? name { get; set; }
 
     public string? sex { get; set; } = "Không muốn trả lời";
     public string? avatarUrl { get; set; }
