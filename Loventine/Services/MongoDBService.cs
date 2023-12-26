@@ -188,9 +188,23 @@ namespace Loventine.Services
         // Region of Post services
         //---------------------------------
 
-        public async Task<List<Post>> GetPostsAsync()
+        public async Task<List<Post>> GetPostsAsync(string userId)
         {
-            return await _postCollection.Find(new BsonDocument()).ToListAsync();
+            var user = await _userCollection.Find(u => u._id == userId).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return new List<Post>();
+            }
+
+            var posts = await _postCollection.Find(new BsonDocument()).ToListAsync();
+
+            foreach (var post in posts)
+            {
+                post.isLike = post.likeAllUserId?.Contains(userId) ?? false;
+            }
+
+
+            return posts;
         }
 
         public async Task<Post?> GetPostByIdAsync(string postId)
@@ -225,7 +239,11 @@ namespace Loventine.Services
 
         public async Task CreateLikeAsync(Like like)
         {
-            await _likeCollection.InsertOneAsync(like);
+            var postFilter = Builders<Post>.Filter.Eq("_id", like.postId);
+            var updateDefinition = Builders<Post>.Update
+                .Inc("likeCounts", 1)
+                .AddToSet("likeAllUserId", like.userLikeId);
+            await _postCollection.UpdateOneAsync(postFilter, updateDefinition);
         }
         public async Task<bool> DeleteLikeAsync(string likeId)
         {
