@@ -39,12 +39,11 @@ namespace Loventine.Controllers
         [HttpPost("loginWithEmail")]
         public async Task<IActionResult> LoginWithEmail([FromBody] LoginRequest loginRequest)
         {
-            var loginSuccess = await _mongoDBService.LoginUserAsync(loginRequest.email, loginRequest.password);
+            var user = await _mongoDBService.LoginUserAsync(loginRequest.email, loginRequest.password);
 
-            if (loginSuccess != null)
+            if (user != null)
             {
-                // Successful login, you can generate and return a token, set cookies, etc.
-                return Ok(new { Message = "Login successful" });
+                return Ok(new { Message = "Login successful", User = user });
             }
             return BadRequest(new { Message = "Invalid login credentials" });
         }
