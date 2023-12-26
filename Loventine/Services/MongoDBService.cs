@@ -255,6 +255,7 @@ namespace Loventine.Services
 
         public async Task CreateLikeAsync(Like like)
         {
+            await _likeCollection.InsertOneAsync(like);
             var postFilter = Builders<Post>.Filter.Eq("_id", like.postId);
             var updateDefinition = Builders<Post>.Update
                 .Inc("likeCounts", 1)
