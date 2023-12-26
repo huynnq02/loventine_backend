@@ -47,5 +47,17 @@ namespace Loventine.Controllers
             }
             return BadRequest(new { Message = "Invalid login credentials" });
         }
+        [HttpPut("{userId}")]
+        public async Task<ActionResult> UpdateUser(string userId, [FromBody] User updatedUser)
+        {
+            var success = await _mongoDBService.UpdateUserAsync(userId, updatedUser);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
     }
 }

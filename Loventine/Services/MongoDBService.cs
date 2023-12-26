@@ -141,6 +141,23 @@ namespace Loventine.Services
         }
 
         // Region of User services
+        public async Task<bool> UpdateUserAsync(string userId, User updatedUser)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u._id, userId);
+            var updateDefinition = Builders<User>.Update.Set(u => u.time, DateTime.UtcNow.ToString());
+
+            foreach (var property in updatedUser.GetType().GetProperties())
+            {
+                if (property.Name != "_id" && property.GetValue(updatedUser) != null)
+                {
+                    updateDefinition = updateDefinition.Set(property.Name, property.GetValue(updatedUser));
+                }
+            }
+
+            var updateResult = await _userCollection.UpdateOneAsync(filter, updateDefinition);
+
+            return updateResult.ModifiedCount > 0;
+        }
         public async Task<User?> LoginUserAsync(string email, string password)
         {
             var user = await _userCollection.Find(u => u.email == email).FirstOrDefaultAsync();
