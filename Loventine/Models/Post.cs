@@ -12,7 +12,7 @@ public class Post
 
     public string? title { get; set; }
     public string? content { get; set; }
-    public string? postingTime { get; set; }
+    public string? postingTime { get; set; } = DateTime.Now.ToString();
     public List<string>? likeAllUserId { get; set; } = new List<string>();
     public int? likeCounts { get; set; } = 0;
     public List<string>? comments { get; set; } = new List<string>();
