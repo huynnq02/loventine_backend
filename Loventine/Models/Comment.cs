@@ -19,6 +19,7 @@ public class Comment
 
     public string? userPostId { get; set; }
 
+    [BsonRepresentation(BsonType.ObjectId)]
     public string? parentCommentId { get; set; }
 
     public List<string>? childrenComments { get; set; }

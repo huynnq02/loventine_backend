@@ -203,7 +203,6 @@ namespace Loventine.Services
                 post.isLike = post.likeAllUserId?.Contains(userId) ?? false;
             }
 
-
             return posts;
         }
 
@@ -276,6 +275,12 @@ namespace Loventine.Services
             await _commentCollection.InsertOneAsync(comment);
             var updateDefinition = Builders<Post>.Update.Push(p => p.comments, comment._id);
             var result = await _postCollection.UpdateOneAsync(p => p._id == comment.postId, updateDefinition);
+            if (comment.replyType == "comment" && !string.IsNullOrEmpty(comment.parentCommentId))
+            {
+                var updateParentcomment = Builders<Comment>.Update.Push(c => c.childrenComments, comment._id);
+                var updateResult = await _commentCollection.UpdateOneAsync(c => c._id == comment.parentCommentId, updateParentcomment);
+            }
+
         }
 
         public async Task<bool> UpdateCommentAsync(string commentId, Comment updatedComment)
