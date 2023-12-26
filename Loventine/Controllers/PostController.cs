@@ -14,7 +14,7 @@ namespace Loventine.Controllers
             _mongoDBService = mongoDBService;
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("user/{userId}")]
         public async Task<ActionResult<List<Post>>> GetPosts(string userId)
         {
             var posts = await _mongoDBService.GetPostsAsync(userId);
