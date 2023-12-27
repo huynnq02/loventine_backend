@@ -34,14 +34,6 @@ public class Post
     public int? numConsultingJobStart { get; set; } = 0;
     public int? countPayment { get; set; } = 0;
 
-    [BsonIgnore]
-    public bool? isHourlyType => adviseType == ADVICE_TYPE.HOURLY;
-    [BsonIgnore]
-    public bool? isDailyType => adviseType == ADVICE_TYPE.DAILY;
-    [BsonIgnore]
-    public bool? isMonthlyType => adviseType == ADVICE_TYPE.MONTHLY;
-    [BsonIgnore]
-    public bool? isYearlyType => adviseType == ADVICE_TYPE.YEARLY;
 }
 
 public static class ADVICE_TYPE
