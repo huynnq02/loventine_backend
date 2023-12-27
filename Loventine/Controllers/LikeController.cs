@@ -30,14 +30,23 @@ namespace Loventine.Controllers
         [HttpDelete("{likeId}")]
         public async Task<ActionResult> Unlike(string likeId)
         {
-            var success = await _mongoDBService.DeleteLikeAsync(likeId);
-
-            if (!success)
+            try
             {
-                return NotFound();
-            }
+                var success = await _mongoDBService.DeleteLikeAsync(likeId);
 
-            return NoContent();
+                if (success)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Internal Server Error", message = ex.Message });
+            }
         }
 
     }

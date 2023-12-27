@@ -272,9 +272,25 @@ namespace Loventine.Services
         }
         public async Task<bool> DeleteLikeAsync(string likeId)
         {
-            var result = await _likeCollection.DeleteOneAsync(l => l._id == likeId);
+            var like = await _likeCollection.Find(l => l._id == likeId).FirstOrDefaultAsync();
+            if (like == null)
+            {
+                return false;
+            }
 
-            return result.IsAcknowledged && result.DeletedCount > 0;
+            var updateDefinition = Builders<Post>.Update.Combine(
+                Builders<Post>.Update.Pull(p => p.likeAllUserId, like.userLikeId),
+                Builders<Post>.Update.Inc(p => p.likeCounts, -1)
+            );
+            var updateResult = await _postCollection.UpdateOneAsync(p => p._id == like.postId, updateDefinition);
+
+            if (updateResult.IsAcknowledged && updateResult.ModifiedCount > 0)
+            {
+                var deleteResult = await _likeCollection.DeleteOneAsync(l => l._id == likeId);
+
+                return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
+            }
+            return false;
         }
         //---------------------------------
         // Region of Comment services
