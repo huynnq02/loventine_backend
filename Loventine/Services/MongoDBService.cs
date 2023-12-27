@@ -265,6 +265,15 @@ namespace Loventine.Services
                 )
             );
 
+            if (updatedPost.isDelete != null && updatedPost.isDelete == true)
+            {
+                updateDefinition = updateDefinition.Set("isDelete", true);
+            }
+            else
+            {
+                updateDefinition = updateDefinition.Unset("isDelete");
+            }
+
             var result = await _postCollection.UpdateOneAsync(filter, updateDefinition);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
