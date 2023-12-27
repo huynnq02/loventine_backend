@@ -236,7 +236,15 @@ namespace Loventine.Services
 
         public async Task<bool> UpdatePostAsync(string postId, Post updatedPost)
         {
-            var result = await _postCollection.ReplaceOneAsync(p => p._id == postId, updatedPost);
+            var filter = Builders<Post>.Filter.Eq("_id", ObjectId.Parse(postId));
+
+            var updateDefinition = Builders<Post>.Update.Combine(updatedPost.GetType().GetProperties().Where(property => property.GetValue(updatedPost) != null) // Only include non-null properties
+        .Select(property =>
+            Builders<Post>.Update.Set(property.Name, property.GetValue(updatedPost))
+        )
+);
+
+            var result = await _postCollection.UpdateOneAsync(filter, updateDefinition);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
