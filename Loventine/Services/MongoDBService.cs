@@ -111,9 +111,9 @@ namespace Loventine.Services
 
 
 
-        public async Task<Bookmark?> GetBookmarkByIdAsync(string bookmarkId)
+        public async Task<Bookmark?> GetBookmarkByIdAsync(string postId)
         {
-            return await _bookmarkCollection.Find(b => b._id == bookmarkId).FirstOrDefaultAsync();
+            return await _bookmarkCollection.Find(b => b.postId == postId).FirstOrDefaultAsync();
         }
         //---------------------------------
         // Region of Message and ChatRoom services

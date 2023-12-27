@@ -22,9 +22,9 @@ namespace Loventine.Controllers
                 var bookmarks = await _mongoDBService.GetBookmarksByUserIdAsync(userId);
                 var bookmarkList = new List<Bookmark>();
 
-                foreach (var bookmarkId in bookmarks)
+                foreach (var postId in bookmarks)
                 {
-                    var bookmark = await _mongoDBService.GetBookmarkByIdAsync(bookmarkId);
+                    var bookmark = await _mongoDBService.GetBookmarkByIdAsync(postId);
 
                     if (bookmark != null)
                     {
