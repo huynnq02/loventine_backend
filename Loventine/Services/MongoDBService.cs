@@ -72,7 +72,7 @@ namespace Loventine.Services
 
                 Console.WriteLine("Bookmark created successfully");
                 var userFilter = Builders<User>.Filter.Eq("_id", bookmark.userId);
-                var updateDefinition = Builders<User>.Update.AddToSet("bookmarks", bookmark._id);
+                var updateDefinition = Builders<User>.Update.AddToSet("bookmarks", bookmark.postId);
                 await _userCollection.UpdateOneAsync(userFilter, updateDefinition);
                 return bookmark;
             }
