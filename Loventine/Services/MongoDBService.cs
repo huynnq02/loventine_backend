@@ -218,6 +218,7 @@ namespace Loventine.Services
             foreach (var post in posts)
             {
                 post.isLike = post.likeAllUserId?.Contains(userId) ?? false;
+                post.isBookmark = user.bookmarks?.Contains(post._id) ?? false;
             }
 
             return posts;
@@ -237,16 +238,18 @@ namespace Loventine.Services
         public async Task<bool> UpdatePostAsync(string postId, Post updatedPost)
         {
             var filter = Builders<Post>.Filter.Eq("_id", ObjectId.Parse(postId));
-
-            var updateDefinition = Builders<Post>.Update.Combine(updatedPost.GetType().GetProperties().Where(property => property.GetValue(updatedPost) != null) // Only include non-null properties
-        .Select(property =>
-            Builders<Post>.Update.Set(property.Name, property.GetValue(updatedPost))
-        )
-);
+            var updateDefinition = Builders<Post>.Update.Combine(
+                updatedPost.GetType().GetProperties().Where(property =>
+                    property.GetValue(updatedPost) != null && !property.PropertyType.IsGenericType
+                ).Select(property =>
+                    Builders<Post>.Update.Set(property.Name, property.GetValue(updatedPost))
+                )
+            );
 
             var result = await _postCollection.UpdateOneAsync(filter, updateDefinition);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
+
 
         public async Task<bool> DeletePostAsync(string postId)
         {
