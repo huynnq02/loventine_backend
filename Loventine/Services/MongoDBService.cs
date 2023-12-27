@@ -38,10 +38,26 @@ namespace Loventine.Services
         {
             try
             {
+                var bookmark = await _bookmarkCollection.Find(b => b._id == bookmarkId).FirstOrDefaultAsync();
+
+                if (bookmark == null)
+                {
+                    return false;
+                }
+
                 var filter = Builders<Bookmark>.Filter.Eq("_id", bookmarkId);
                 var result = await _bookmarkCollection.DeleteOneAsync(filter);
 
-                return result.IsAcknowledged && result.DeletedCount > 0;
+                if (result.IsAcknowledged && result.DeletedCount > 0)
+                {
+                    var userFilter = Builders<User>.Filter.Eq("_id", bookmark.userId);
+                    var updateDefinition = Builders<User>.Update.Pull("bookmarks", bookmark.postId);
+                    await _userCollection.UpdateOneAsync(userFilter, updateDefinition);
+
+                    return true;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {
